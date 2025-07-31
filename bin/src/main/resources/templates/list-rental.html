@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/css/style.css}" rel="stylesheet">
+<title>視聴覚教材貸し出し</title>
+</head>
+<body>
+  <header>
+    <nav class="navbar navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="">視聴覚教材貸し出し</a>
+        <ul class="navbar-nav">
+          <li class="nav-item text-light">[[${session.loginStatus.name}]] [<a th:href="@{/logout}">ログアウト</a>]</li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  
+  <div class="container">
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <div th:if="${message != null}" class="alert alert-success">[[${message}]]</div>
+      
+        <h2 class="h4">貸し出し中の教材</h2>
+        <div th:if="${#lists.size(borrowingList) < 1}" class="alert alert-primary">貸し出し中の教材はありません</div>
+        <table th:if="${#lists.size(borrowingList) >= 1}" class="table table-bordered">
+          <thead>
+            <tr>
+              <th>教材名</th>
+              <th>種類</th>
+              <th>出版元</th>
+              <th>備考</th>
+              <th>返却</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="material : ${borrowingList}">
+              <td>[[${material.name}]]</td>
+              <td>[[${material.materialType.name}]]</td>
+              <td>[[${material.publisher}]]</td>
+              <td>[[${material.note}]]</td>
+              <td><a th:href="@{/rental/return/{id}(id=${material.id})}" class="btn btn-danger btn-sm">返却</a></td>
+            </tr>
+          </tbody>
+        </table>
+  
+        <h2 class="h4 mt-5">貸し出し可能な教材</h2>
+        <div th:if="${#lists.size(materialList) < 1}" class="alert alert-danger">貸し出し可能な教材はありません</div>
+        <table th:if="${#lists.size(materialList) >= 1}"  class="table table-bordered">
+          <thead>
+            <tr>
+              <th>教材名</th>
+              <th>種類</th>
+              <th>出版元</th>
+              <th>備考</th>
+              <th>貸し出し</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="material : ${materialList}">
+              <td>[[${material.name}]]</td>
+              <td>[[${material.materialType.name}]]</td>
+              <td>[[${material.publisher}]]</td>
+              <td>[[${material.note}]]</td>
+              <td><a th:href="@{/rental/borrow/{id}(id=${material.id})}" class="btn btn-success btn-sm">借りる</a></td>
+            </tr>
+          </tbody>
+        </table>
+  
+        <div th:replace="~{widget/pagination :: pagination(${totalPages}, ${currentPage}, 'rental')}"></div>
+      </div><!-- /.col- -->
+    </div><!-- /.row -->
+  </div><!-- /.container -->
+  <script src="js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
