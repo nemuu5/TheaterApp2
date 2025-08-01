@@ -16,13 +16,17 @@ import com.example.app.login.StudentAuthFilter;
 public class ApplicationConfig implements WebMvcConfigurer {
 
 	// バリデーションメッセージのカスタマイズ
+	// Springのフォームバリデーションで表示されるエラーメッセージを
+	// 日本語などにカスタマイズするための設定
 	@Override
 	public Validator getValidator() {
 		var validator = new LocalValidatorFactoryBean();
 		validator.setValidationMessageSource(messageSource());
 		return validator;
 	}
-
+	
+	// validation.properties または validation_ja.properties などを
+	// リソースフォルダに配置すれば、そのファイルの中のメッセージを使えます
     @Bean
     MessageSource messageSource() {
 		var messageSource = new ResourceBundleMessageSource();
@@ -31,6 +35,9 @@ public class ApplicationConfig implements WebMvcConfigurer {
 	}
 
     // 認証用フィルタの有効化
+    // 管理者用ページ（URLが /admin/material/* や /admin/student/* で始まるもの）にアクセスした時、
+    // AdminAuthFilter を通すようにしています。
+    // 目的：管理者かどうかをチェックして、不正アクセスをブロックすること。
     @Bean
     FilterRegistrationBean<AdminAuthFilter> adminAuthFilter() {
  		var bean = new FilterRegistrationBean<AdminAuthFilter>(new AdminAuthFilter());
@@ -39,6 +46,9 @@ public class ApplicationConfig implements WebMvcConfigurer {
  		return bean;
  	}
 
+    // Student用フィルタの登録
+    // 一般ユーザー（生徒）用のページに対して StudentAuthFilter を適用。
+    // たとえば / や /rental/* のURLにアクセスする際に、ログイン済みかどうかをチェックできます
     @Bean
     FilterRegistrationBean<StudentAuthFilter> studentAuthFilter() {
  		var bean = new FilterRegistrationBean<StudentAuthFilter>(new StudentAuthFilter());

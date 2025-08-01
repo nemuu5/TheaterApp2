@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>EducationSystem</artifactId>
+	<artifactId>TheaterApp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>EducationSystem</name>
-	<description>視聴覚教材貸し出しシステム</description>
+	<name>TheaterApp</name>
+	<description>劇場ナビ</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

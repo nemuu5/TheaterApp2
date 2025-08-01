@@ -1,5 +1,8 @@
 package com.example.app.controller.admin;
 
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -14,8 +17,6 @@ import com.example.app.login.LoginAuthority;
 import com.example.app.login.LoginStatus;
 import com.example.app.service.AdminService;
 
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -26,12 +27,14 @@ public class AdminLoginController {
 	private final AdminService service;
 	private final HttpSession session;
 
+	// 管理者ログイン画面表示
 	@GetMapping("/login")
 	public String login(Model model) {
 		model.addAttribute(new Login());
 		return "admin/login-admin";
 	}
 
+	// ログイン処理
 	@PostMapping("/login")
 	public String login(
 			@Valid Login login,
@@ -57,6 +60,7 @@ public class AdminLoginController {
 		return "redirect:/admin/material/list";
 	}
 
+	// ログアウト処理 セッションに LoginStatus を保存し、ログイン状態を管理
 	@GetMapping("/logout")
 	public String logout(
 			RedirectAttributes redirectAttributes) {
